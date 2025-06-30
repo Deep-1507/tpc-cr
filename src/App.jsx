@@ -14,7 +14,7 @@ function App() {
         <BrowserRouter>
           <div className="flex-grow">
             <Routes>
-              <Route path="/auth" element={<Auth />} />
+              <Route path="/" element={<Auth />} />
 
               <Route
                 path="/create-drive"
