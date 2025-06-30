@@ -26,7 +26,7 @@ const Navbar = () => {
           {/* Logo and Name */}
           <div className="flex-shrink-0">
             <h1 className="text-2xl font-bold">
-              TPC (BIET-JHS) - Coorporate Relations
+              TPC (BIET-JHS) - CR
             </h1>
           </div>
 
