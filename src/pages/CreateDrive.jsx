@@ -8,6 +8,7 @@ const CreateDrive = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const [loading, setLoading] = useState(false);
 
   // FORM STATE
   const [formData, setFormData] = useState({
@@ -108,6 +109,8 @@ const CreateDrive = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  setLoading(true); // Start loading
+
   try {
     const token = localStorage.getItem("token");
 
@@ -119,7 +122,7 @@ const handleSubmit = async (e) => {
 
     enqueueSnackbar("Drive created successfully!", { variant: "success" });
 
-    // Reset form
+    // Reset form after success
     setFormData({
       companyName: "",
       hrDetails: [""],
@@ -144,6 +147,8 @@ const handleSubmit = async (e) => {
       "Error creating drive: " + (error?.response?.data?.message || "Unknown error"),
       { variant: "error" }
     );
+  } finally {
+    setLoading(false); // Stop loading after both success or failure
   }
 };
 
@@ -423,13 +428,40 @@ const handleSubmit = async (e) => {
 
         {/* Submit Button */}
         <div>
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white py-2 px-4 rounded"
-          >
-            Create Drive
-          </button>
-        </div>
+  <button
+    type="submit"
+    disabled={loading}
+    className={`w-full ${
+      loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+    } text-white py-2 px-4 rounded flex justify-center items-center`}
+  >
+    {loading ? (
+      <svg
+        className="animate-spin h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+      </svg>
+    ) : (
+      "Create Drive"
+    )}
+  </button>
+</div>
+
       </form>
         </div>
       </div>

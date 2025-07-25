@@ -51,7 +51,7 @@ const TeamDetails = () => {
         {/* Form area */}
         <div className="p-6 ml-4 py-4 h-screen overflow-y-auto">
           <h1 className="text-3xl font-bold mb-4">Team Members Details</h1>
-          <h3 className="text-2xl font-bold mb-4">
+          <h3 className="text-2xl font-bold mb-4 text-green-400">
             Click on cards to visit the member's linkedin page associated.
           </h3>
 
