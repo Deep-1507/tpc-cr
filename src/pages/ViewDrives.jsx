@@ -278,8 +278,14 @@ const ViewDrives = () => {
                     <strong>Coordinator:</strong> {drive.coodName}
                   </p>
                   <p>
-                    <strong>Status:</strong> {drive.status}
+                    <strong>Status:</strong> {' '}
+                    {drive.status == 1 ? 'Active':
+                    drive.status == 2 ? 'Inactive':
+                    drive.status == 3 ? 'Completed':
+                    'Pending'}
                   </p>
+
+                  
                   <p>
                     <strong>Phone:</strong> {drive.phoneNumber}
                   </p>

@@ -14,7 +14,7 @@ function App() {
         <BrowserRouter>
           <div className="flex-grow">
             <Routes>
-              <Route path="/" element={<Auth />} />
+              <Route path="/auth" element={<Auth />} />
 
               <Route
                 path="/create-drive"
@@ -25,7 +25,7 @@ function App() {
                 }
               />
               <Route
-                path="/view-drives"
+                path="/"
                 element={
                   <ProtectedRoute>
                     <ViewDrives />

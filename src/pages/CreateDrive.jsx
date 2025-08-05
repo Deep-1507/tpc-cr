@@ -19,7 +19,9 @@ const CreateDrive = () => {
     status: "",
     dateCreated: new Date().toISOString().split("T")[0],
     dateUpdated: new Date().toISOString().split("T")[0],
-    driveDetails: [{ message: "", reminder: { date: "", reminderMessage: "" } }],
+    driveDetails: [
+      { message: "", reminder: { date: "", reminderMessage: "" } },
+    ],
     driveClosingDetails: [
       {
         closingMessage: "",
@@ -107,50 +109,53 @@ const CreateDrive = () => {
   const removeClosingDetail = () =>
     setFormData((prev) => ({ ...prev, driveClosingDetails: [] }));
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true); // Start loading
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      const token = localStorage.getItem("token");
 
-    await axios.post(`${apiBaseUrl}/api/v1/drive/drives`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    enqueueSnackbar("Drive created successfully!", { variant: "success" });
-
-    // Reset form after success
-    setFormData({
-      companyName: "",
-      hrDetails: [""],
-      coodName: "",
-      phoneNumber: "",
-      status: "",
-      dateCreated: new Date().toISOString().split("T")[0],
-      dateUpdated: new Date().toISOString().split("T")[0],
-      driveDetails: [{ message: "", reminder: { date: "", reminderMessage: "" } }],
-      driveClosingDetails: [
-        {
-          closingMessage: "",
-          closingStatus: "",
-          closingDetails: [
-            { totalParticipated: "", totalPlaced: "", linksToDocs: [""] },
-          ],
+      await axios.post(`${apiBaseUrl}/api/v1/drive/drives`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      ],
-    });
-  } catch (error) {
-    enqueueSnackbar(
-      "Error creating drive: " + (error?.response?.data?.message || "Unknown error"),
-      { variant: "error" }
-    );
-  } finally {
-    setLoading(false); // Stop loading after both success or failure
-  }
-};
+      });
+
+      enqueueSnackbar("Drive created successfully!", { variant: "success" });
+
+      // Reset form after success
+      setFormData({
+        companyName: "",
+        hrDetails: [""],
+        coodName: "",
+        phoneNumber: "",
+        status: "",
+        dateCreated: new Date().toISOString().split("T")[0],
+        dateUpdated: new Date().toISOString().split("T")[0],
+        driveDetails: [
+          { message: "", reminder: { date: "", reminderMessage: "" } },
+        ],
+        driveClosingDetails: [
+          {
+            closingMessage: "",
+            closingStatus: "",
+            closingDetails: [
+              { totalParticipated: "", totalPlaced: "", linksToDocs: [""] },
+            ],
+          },
+        ],
+      });
+    } catch (error) {
+      enqueueSnackbar(
+        "Error creating drive: " +
+          (error?.response?.data?.message || "Unknown error"),
+        { variant: "error" }
+      );
+    } finally {
+      setLoading(false); // Stop loading after both success or failure
+    }
+  };
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -166,303 +171,308 @@ const handleSubmit = async (e) => {
         <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gray-100 h-full">
           <h1 className="text-2xl font-bold mb-6">Create Drive</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Company Name */}
-        <div>
-          <label className="block mb-1" htmlFor="companyName">
-            Company Name
-          </label>
-          <input
-            type="text"
-            id="companyName"
-            name="companyName"
-            value={formData.companyName}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* HR Details */}
-        <div>
-          <label className="block mb-1">HR Details</label>
-          {formData.hrDetails.map((hr, index) => (
-            <div key={index} className="mb-2">
+            {/* Company Name */}
+            <div>
+              <label className="block mb-1" htmlFor="companyName">
+                Company Name
+              </label>
               <input
                 type="text"
-                value={hr}
-                onChange={(e) => handleArrayChange(e, index, "hrDetails")}
+                id="companyName"
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleChange}
+                required
                 className="w-full p-2 border rounded"
               />
+            </div>
+
+            {/* HR Details */}
+            <div>
+              <label className="block mb-1">HR Details</label>
+              {formData.hrDetails.map((hr, index) => (
+                <div key={index} className="mb-2">
+                  <input
+                    type="text"
+                    value={hr}
+                    onChange={(e) => handleArrayChange(e, index, "hrDetails")}
+                    className="w-full p-2 border rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeHrField(index)}
+                    className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Remove HR Detail
+                  </button>
+                </div>
+              ))}
               <button
                 type="button"
-                onClick={() => removeHrField(index)}
-                className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+                onClick={addHrField}
+                className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
               >
-                Remove HR Detail
+                Add HR Detail
               </button>
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={addHrField}
-            className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
-          >
-            Add HR Detail
-          </button>
-        </div>
 
-        {/* Coordinator Name */}
-        <div>
-          <label className="block mb-1" htmlFor="coodName">
-            Coordinator Name
-          </label>
-          <input
-            type="text"
-            id="coodName"
-            name="coodName"
-            value={formData.coodName}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div>
-          <label className="block mb-1" htmlFor="phoneNumber">
-            Phone Number
-          </label>
-          <input
-            type="text"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        {/* Status */}
-        <div>
-  <label className="block mb-1" htmlFor="status">
-    Status
-  </label>
-  <select
-    id="status"
-    name="status"
-    value={formData.status}
-    onChange={handleChange}
-    required
-    className="w-full p-2 border rounded"
-  >
-    <option value="" disabled>Select Status</option>
-    <option value="1">Active</option>
-    <option value="2">Inactive</option>
-    <option value="3">Completed</option>
-    <option value="4">Pending</option>
-  </select>
-</div>
-
-
-        {/* Drive Details */}
-        <div>
-          <h2 className="font-bold">Drive Details</h2>
-          {formData.driveDetails.map((drive, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="font-semibold">Drive Detail {index + 1}</h3>
-              <label className="block mb-1">Message</label>
+            {/* Coordinator Name */}
+            <div>
+              <label className="block mb-1" htmlFor="coodName">
+                Coordinator Name
+              </label>
               <input
                 type="text"
-                value={drive.message}
-                onChange={(e) =>
-                  handleNestedChange(e, index, "driveDetails", "message")
-                }
+                id="coodName"
+                name="coodName"
+                value={formData.coodName}
+                onChange={handleChange}
+                required
                 className="w-full p-2 border rounded"
               />
-              <label className="block mt-2">Reminder Date</label>
-              <input
-                type="date"
-                value={drive.reminder.date}
-                onChange={(e) =>
-                  handleNestedChange(e, index, "driveDetails", "reminder.date")
-                }
-                className="w-full p-2 border rounded"
-              />
-              <label className="block mt-2">Reminder Message</label>
+            </div>
+
+            {/* Phone Number */}
+            <div>
+              <label className="block mb-1" htmlFor="phoneNumber">
+                Phone Number
+              </label>
               <input
                 type="text"
-                value={drive.reminder.reminderMessage}
-                onChange={(e) =>
-                  handleNestedChange(
-                    e,
-                    index,
-                    "driveDetails",
-                    "reminder.reminderMessage"
-                  )
-                }
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                required
                 className="w-full p-2 border rounded"
               />
+            </div>
 
+            {/* Status */}
+            <div>
+              <label className="block mb-1" htmlFor="status">
+                Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded"
+              >
+                <option value="" disabled>
+                  Select Status
+                </option>
+                <option value="1">Active</option>
+                <option value="2">Inactive</option>
+                <option value="3">Completed</option>
+                <option value="4">Pending</option>
+              </select>
+            </div>
+
+            {/* Drive Details */}
+            <div>
+              <h2 className="font-bold">Drive Details</h2>
+              {formData.driveDetails.map((drive, index) => (
+                <div key={index} className="mb-4">
+                  <h3 className="font-semibold">Drive Detail {index + 1}</h3>
+                  <label className="block mb-1">Message</label>
+                  <input
+                    type="text"
+                    value={drive.message}
+                    onChange={(e) =>
+                      handleNestedChange(e, index, "driveDetails", "message")
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                  <label className="block mt-2">Reminder Date</label>
+                  <input
+                    type="date"
+                    value={drive.reminder.date}
+                    onChange={(e) =>
+                      handleNestedChange(
+                        e,
+                        index,
+                        "driveDetails",
+                        "reminder.date"
+                      )
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                  <label className="block mt-2">Reminder Message</label>
+                  <input
+                    type="text"
+                    value={drive.reminder.reminderMessage}
+                    onChange={(e) =>
+                      handleNestedChange(
+                        e,
+                        index,
+                        "driveDetails",
+                        "reminder.reminderMessage"
+                      )
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => removeDriveDetail(index)}
+                    className="mt-2 bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Remove Drive Detail {index + 1}
+                  </button>
+                </div>
+              ))}
               <button
                 type="button"
-                onClick={() => removeDriveDetail(index)}
-                className="mt-2 bg-red-500 text-white px-2 py-1 rounded"
+                onClick={addDriveDetail}
+                className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
               >
-                Remove Drive Detail {index + 1}
+                Add Drive Detail
               </button>
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={addDriveDetail}
-            className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
-          >
-            Add Drive Detail
-          </button>
-        </div>
 
-        {/* Closing Details */}
-        <div>
-          <h2 className="font-bold">Drive Closing Details</h2>
-          {formData.driveClosingDetails.length > 0 ? (
-            <div className="mb-4">
-              <label className="block mb-1">Closing Message</label>
-              <input
-                type="text"
-                value={formData.driveClosingDetails[0].closingMessage}
-                onChange={(e) =>
-                  handleNestedChange(
-                    e,
-                    0,
-                    "driveClosingDetails",
-                    "closingMessage"
-                  )
-                }
-                className="w-full p-2 border rounded"
-              />
-              <label className="block mt-2">Closing Status</label>
-              <input
-                type="text"
-                value={formData.driveClosingDetails[0].closingStatus}
-                onChange={(e) =>
-                  handleNestedChange(
-                    e,
-                    0,
-                    "driveClosingDetails",
-                    "closingStatus"
-                  )
-                }
-                className="w-full p-2 border rounded"
-              />
-              {formData.driveClosingDetails[0].closingDetails.map(
-                (detail, detailIndex) => (
-                  <div key={detailIndex} className="mt-4">
-                    <label className="block mb-1">Total Participated</label>
-                    <input
-                      type="number"
-                      value={detail.totalParticipated}
-                      onChange={(e) =>
-                        handleNestedChange(
-                          e,
-                          detailIndex,
-                          "driveClosingDetails[0].closingDetails",
-                          "totalParticipated"
-                        )
-                      }
-                      className="w-full p-2 border rounded"
-                    />
-                    <label className="block mt-2">Total Placed</label>
-                    <input
-                      type="number"
-                      value={detail.totalPlaced}
-                      onChange={(e) =>
-                        handleNestedChange(
-                          e,
-                          detailIndex,
-                          "driveClosingDetails[0].closingDetails",
-                          "totalPlaced"
-                        )
-                      }
-                      className="w-full p-2 border rounded"
-                    />
-                    {detail.linksToDocs.map((docLink, linkIndex) => (
-                      <div key={linkIndex} className="mt-2">
-                        <label className="block">Link to Document</label>
+            {/* Closing Details */}
+            <div>
+              <h2 className="font-bold">Drive Closing Details</h2>
+              {formData.driveClosingDetails.length > 0 ? (
+                <div className="mb-4">
+                  <label className="block mb-1">Closing Message</label>
+                  <input
+                    type="text"
+                    value={formData.driveClosingDetails[0].closingMessage}
+                    onChange={(e) =>
+                      handleNestedChange(
+                        e,
+                        0,
+                        "driveClosingDetails",
+                        "closingMessage"
+                      )
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                  <label className="block mt-2">Closing Status</label>
+                  <input
+                    type="text"
+                    value={formData.driveClosingDetails[0].closingStatus}
+                    onChange={(e) =>
+                      handleNestedChange(
+                        e,
+                        0,
+                        "driveClosingDetails",
+                        "closingStatus"
+                      )
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                  {formData.driveClosingDetails[0].closingDetails.map(
+                    (detail, detailIndex) => (
+                      <div key={detailIndex} className="mt-4">
+                        <label className="block mb-1">Total Participated</label>
                         <input
-                          type="text"
-                          value={docLink}
+                          type="number"
+                          value={detail.totalParticipated}
                           onChange={(e) =>
                             handleNestedChange(
                               e,
-                              linkIndex,
+                              detailIndex,
                               "driveClosingDetails[0].closingDetails",
-                              "linksToDocs"
+                              "totalParticipated"
                             )
                           }
                           className="w-full p-2 border rounded"
                         />
+                        <label className="block mt-2">Total Placed</label>
+                        <input
+                          type="number"
+                          value={detail.totalPlaced}
+                          onChange={(e) =>
+                            handleNestedChange(
+                              e,
+                              detailIndex,
+                              "driveClosingDetails[0].closingDetails",
+                              "totalPlaced"
+                            )
+                          }
+                          className="w-full p-2 border rounded"
+                        />
+                        {detail.linksToDocs.map((docLink, linkIndex) => (
+                          <div key={linkIndex} className="mt-2">
+                            <label className="block">Link to Document</label>
+                            <input
+                              type="text"
+                              value={docLink}
+                              onChange={(e) =>
+                                handleNestedChange(
+                                  e,
+                                  linkIndex,
+                                  "driveClosingDetails[0].closingDetails",
+                                  "linksToDocs"
+                                )
+                              }
+                              className="w-full p-2 border rounded"
+                            />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )
+                    )
+                  )}
+                  <button
+                    type="button"
+                    onClick={removeClosingDetail}
+                    className="mt-2 bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Remove Closing Details
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={addClosingDetail}
+                  className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
+                >
+                  Add Closing Details
+                </button>
               )}
+            </div>
+
+            {/* Submit Button */}
+            <div>
               <button
-                type="button"
-                onClick={removeClosingDetail}
-                className="mt-2 bg-red-500 text-white px-2 py-1 rounded"
+                type="submit"
+                disabled={loading}
+                className={`w-full ${
+                  loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+                } text-white py-2 px-4 rounded flex justify-center items-center`}
               >
-                Remove Closing Details
+                {loading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Create Drive"
+                )}
               </button>
             </div>
-          ) : (
-            <button
-              type="button"
-              onClick={addClosingDetail}
-              className="mt-1 bg-blue-500 text-white px-2 py-1 rounded"
-            >
-              Add Closing Details
-            </button>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <div>
-  <button
-    type="submit"
-    disabled={loading}
-    className={`w-full ${
-      loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
-    } text-white py-2 px-4 rounded flex justify-center items-center`}
-  >
-    {loading ? (
-      <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v8H4z"
-        ></path>
-      </svg>
-    ) : (
-      "Create Drive"
-    )}
-  </button>
-</div>
-
-      </form>
+          </form>
         </div>
       </div>
     </div>

@@ -62,7 +62,7 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/view-drives"
+                to="/"
                 className="flex items-center gap-x-2 p-2 hover:bg-gray-700 rounded"
               >
                 <CiViewList className="text-lg" />
