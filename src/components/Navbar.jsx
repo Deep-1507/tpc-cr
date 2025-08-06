@@ -11,7 +11,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/");
+    navigate("/auth");
   };
 
   const toggleMenu = () => {
@@ -96,7 +96,7 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/view-drives"
+              to="/"
               className="flex items-center gap-x-2 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
             >
               <CiViewList className="text-lg" />
