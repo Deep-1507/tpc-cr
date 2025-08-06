@@ -35,7 +35,7 @@ const Auth = () => {
       enqueueSnackbar("Signin successful", { variant: "success" });
 
       setTimeout(() => {
-        navigate("/create-drive");
+        navigate("/");
       }, 1000);
     } catch (err) {
       console.error("Signin error:", err);
