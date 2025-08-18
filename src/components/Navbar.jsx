@@ -104,6 +104,14 @@ const Navbar = () => {
             </Link>
 
             <Link
+              to="/master-data"
+              className="flex items-center gap-x-2 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+            >
+              <CiViewList className="text-lg" />
+              HR Master Data
+            </Link>
+
+            <Link
               to="/contact-details"
               className="flex items-center gap-x-2 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
             >

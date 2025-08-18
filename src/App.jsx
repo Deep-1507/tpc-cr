@@ -5,6 +5,7 @@ import ManageDrive from './pages/ManageDrive';
 import CreateDrive from './pages/CreateDrive';
 import Auth from './pages/Auth';
 import TeamDetails from './pages/TeamDetails';
+import HRMasterData from "./pages/HRMasterData";
 import ProtectedRoute from "./middleware/ProtectedRoute";
 
 function App() {
@@ -37,6 +38,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ManageDrive />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/master-data"
+                element={
+                  <ProtectedRoute>
+                    <HRMasterData />
                   </ProtectedRoute>
                 }
               />

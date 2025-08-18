@@ -71,6 +71,15 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
+                to="/master-data"
+                className="flex items-center gap-x-2 p-2 hover:bg-gray-700 rounded"
+              >
+                <CiViewList className="text-lg" />
+                {isOpen ? "HR Master Data" : "MD"}
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/contact-details"
                 className="flex items-center gap-x-2 p-2 hover:bg-gray-700 rounded"
               >
