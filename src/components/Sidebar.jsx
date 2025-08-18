@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IoMdCreate } from "react-icons/io";
 import { CiViewList } from "react-icons/ci";
 import { MdGroups } from "react-icons/md";
+import { CiDatabase } from "react-icons/ci";
 import { IoMdLogOut } from "react-icons/io";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -74,7 +75,7 @@ const Sidebar = () => {
                 to="/master-data"
                 className="flex items-center gap-x-2 p-2 hover:bg-gray-700 rounded"
               >
-                <CiViewList className="text-lg" />
+                <CiDatabase className="text-lg" />
                 {isOpen ? "HR Master Data" : "MD"}
               </Link>
             </li>

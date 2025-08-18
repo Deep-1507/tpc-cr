@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoMdCreate } from "react-icons/io";
 import { CiViewList } from "react-icons/ci";
 import { MdGroups } from "react-icons/md";
+import { CiDatabase } from "react-icons/ci";
 import { IoMdLogOut } from "react-icons/io";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -107,7 +108,7 @@ const Navbar = () => {
               to="/master-data"
               className="flex items-center gap-x-2 px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
             >
-              <CiViewList className="text-lg" />
+              <CiDatabase className="text-lg" />
               HR Master Data
             </Link>
 
